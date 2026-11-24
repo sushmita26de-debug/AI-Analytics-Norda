@@ -1,0 +1,16 @@
+{
+  "_about": "Business rules shared by the profile skill, the clean skill and the mart skill. Change a rule here only; all scripts follow. Decisions behind them: knowledge/metadata.md.",
+  "core_markets": ["DE", "FR", "IT", "NL"],
+  "extra_countries": ["ES", "AT"],
+  "country_names": {
+    "DE": "Germany",
+    "FR": "France",
+    "IT": "Italy",
+    "NL": "Netherlands",
+    "ES": "Spain",
+    "AT": "Austria"
+  },
+  "channels": ["web", "app", "marketplace"],
+  "brands": ["Kova", "Kaivo", "Pavo", "Visna", "Ondia", "Nodo"],
+  "categories": ["Computers", "Phones & Tablets", "Monitors", "Audio", "Accessories"]
+}

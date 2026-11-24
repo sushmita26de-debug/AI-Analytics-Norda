@@ -1,0 +1,184 @@
+table _Measures
+	lineageTag: 7e9fa132-234d-474c-9409-3fac3cef3203
+
+	/// Revenue before returns: quantity x unit price x (1 - discount), summed per line (metrics.md).
+	measure 'Total Revenue' = SUM ( fact_sales[revenue] )
+		formatString: \€#,0.00;-\€#,0.00;\€#,0.00
+		lineageTag: 0c3df9f6-f5d8-45a7-be75-088bfdbab1fe
+
+	/// Distinct order numbers, not lines. One order with three products is one order (metrics.md).
+	measure Orders = DISTINCTCOUNT ( fact_sales[order_id] )
+		formatString: #,0
+		lineageTag: 705df4ac-9b69-4acd-bae3-781704d65aa2
+
+	/// Sum of quantity (metrics.md).
+	measure 'Units Sold' = SUM ( fact_sales[quantity] )
+		formatString: #,0
+		lineageTag: 57032885-691a-4864-b5a0-93e88ca5477b
+
+	/// Quantity x unit price x discount, summed per line (metrics.md).
+	measure 'Discount Amount' = SUM ( fact_sales[discount_amount] )
+		formatString: \€#,0.00;-\€#,0.00;\€#,0.00
+		lineageTag: 0c941540-58c7-45a9-bd81-734550bae8b2
+
+	/// Units at month end for the latest month WITH STOCK DATA in the selection, never summed across months. Country and channel do not filter stock (no relationship).
+	measure 'Stock on Hand' =
+			VAR LastStockKey =
+			    CALCULATE ( MAX ( fact_inventory[date_key] ), REMOVEFILTERS ( dim_product ) )
+			RETURN
+			    CALCULATE (
+			        SUM ( fact_inventory[qty_on_hand] ),
+			        REMOVEFILTERS ( dim_date ),
+			        dim_date[date_key] = LastStockKey
+			    )
+		formatString: #,0
+		lineageTag: 86093040-9ae9-497f-8a8c-5329c31f1063
+
+	/// The month Stock on Hand is shown for: the latest month in the selection, e.g. Dec 2025.
+	measure 'Stock Month' =
+			VAR LastStockKey =
+			    CALCULATE ( MAX ( fact_inventory[date_key] ), REMOVEFILTERS ( dim_product ) )
+			RETURN
+			    FORMAT ( DATE ( INT ( LastStockKey / 10000 ), MOD ( INT ( LastStockKey / 100 ), 100 ), 1 ), "mmm yyyy" )
+		lineageTag: 9046208c-c794-4273-a3ab-a5b3e00c7d13
+
+	/// Products with stock exactly 0 at the end of the latest month with stock data in the selection. A missing stock record is not 0.
+	measure 'Products Ran Out' =
+			VAR LastStockKey =
+			    CALCULATE ( MAX ( fact_inventory[date_key] ), REMOVEFILTERS ( dim_product ) )
+			RETURN
+			    CALCULATE (
+			        DISTINCTCOUNT ( fact_inventory[sku] ),
+			        REMOVEFILTERS ( dim_date ),
+			        dim_date[date_key] = LastStockKey,
+			        fact_inventory[qty_on_hand] = 0
+			    ) + 0
+		formatString: #,0
+		lineageTag: 2baf1524-2130-4740-86d3-c7ef31f32f30
+
+	/// Products with stock 0 at the end of at least one selected month (all months when no month is selected).
+	measure 'Products at 0 in Selection' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_inventory[sku] ),
+			    fact_inventory[qty_on_hand] = 0
+			) + 0
+		formatString: #,0
+		lineageTag: 2eaa4162-3687-4361-8910-89bb5f2be424
+
+	/// Shown next to stock when a country or channel filter is on: stock has no country or channel.
+	measure 'Stock Note' =
+			IF (
+			    ISFILTERED ( dim_country ) || ISFILTERED ( dim_channel ),
+			    "Not filtered by country/channel – stock has no country/channel",
+			    ""
+			)
+		lineageTag: d3edccd8-f5b4-4897-828e-aa1edb1c9de8
+
+	/// Header text: the data period (e.g. Jan–Dec 2025) with no month filter, otherwise the selected months (e.g. Mar, Jul 2025).
+	measure 'Selected Period' =
+			IF (
+			    NOT ISFILTERED ( dim_date ),
+			    VAR FirstKey = CALCULATE ( MIN ( fact_sales[date_key] ), REMOVEFILTERS () )
+			    VAR LastKey = CALCULATE ( MAX ( fact_sales[date_key] ), REMOVEFILTERS () )
+			    VAR PeriodStart = DATE ( INT ( FirstKey / 10000 ), MOD ( INT ( FirstKey / 100 ), 100 ), 1 )
+			    VAR PeriodEnd = DATE ( INT ( LastKey / 10000 ), MOD ( INT ( LastKey / 100 ), 100 ), 1 )
+			    RETURN
+			        IF (
+			            YEAR ( PeriodStart ) = YEAR ( PeriodEnd ),
+			            FORMAT ( PeriodStart, "mmm" ) & "–" & FORMAT ( PeriodEnd, "mmm yyyy" ),
+			            FORMAT ( PeriodStart, "mmm yyyy" ) & "–" & FORMAT ( PeriodEnd, "mmm yyyy" )
+			        ),
+			    VAR OneYear = DISTINCTCOUNT ( dim_date[year] ) = 1
+			    VAR Months =
+			        CONCATENATEX (
+			            VALUES ( dim_date[year_month] ),
+			            FORMAT (
+			                DATE ( VALUE ( LEFT ( dim_date[year_month], 4 ) ), VALUE ( RIGHT ( dim_date[year_month], 2 ) ), 1 ),
+			                IF ( OneYear, "mmm", "mmm yyyy" )
+			            ),
+			            ", ",
+			            dim_date[year_month], ASC
+			        )
+			    RETURN
+			        IF ( OneYear, Months & " " & MAX ( dim_date[year] ), Months )
+			)
+		lineageTag: 270b9e63-96b1-45ba-9051-00773e4a53a2
+
+	/// Revenue for the 10 best-selling products in the selection (ranked by revenue); blank for the rest. Used by the best-selling products chart.
+	measure 'Top 10 Revenue' =
+			VAR Rev = [Total Revenue]
+			VAR RankNo =
+			    RANKX ( ALLSELECTED ( dim_product[product_name] ), [Total Revenue], , DESC, SKIP )
+			RETURN
+			    IF ( Rev > 0 && RankNo <= 10, Rev )
+		formatString: \€#,0.00;-\€#,0.00;\€#,0.00
+		lineageTag: 857a8c5a-737e-4c1d-8899-215c3fc3d5af
+
+	/// Number of selected months (all months when none is selected) that ended with stock 0.
+	measure 'Months at 0' = CALCULATE ( COUNTROWS ( fact_inventory ), fact_inventory[qty_on_hand] = 0 )
+		formatString: #,0
+		lineageTag: 139c2a9a-42cd-4a5a-9310-06f066d64070
+
+	/// Products in the catalogue for the selected categories (or products).
+	measure 'Products in Selection' = COUNTROWS ( dim_product )
+		formatString: #,0
+		lineageTag: 1d2f8897-2d7a-4b63-b29e-a276e2f4f3b9
+
+	/// Summary line above the product table.
+	measure 'Table Summary' =
+			FORMAT ( [Products in Selection], "#,0" ) & " products, "
+			    & FORMAT ( [Products Ran Out], "#,0" ) & " ran out (stock 0 at end of " & [Stock Month] & ") · "
+			    & FORMAT ( [Products at 0 in Selection], "#,0" ) & " were at 0 in at least one month"
+		lineageTag: 3b73bd14-4789-4018-952e-cfec7aa08ce3
+
+	/// Caption under the stock number.
+	measure 'Stock Caption' = "units at month end, " & [Stock Month]
+		lineageTag: 08050782-01ca-460a-a9b8-f6610272f65d
+
+	/// Bar colour: amber for the month with the most revenue, calm blue for the rest.
+	measure 'Colour Month' =
+			VAR MaxRevenue = MAXX ( ALLSELECTED ( dim_date[month_label], dim_date[year_month] ), [Total Revenue] )
+			RETURN
+			    IF ( [Total Revenue] = MaxRevenue, "#F0A73A", "#5F87B4" )
+		lineageTag: 57127a12-d5b9-4686-b31e-099479ee1f9e
+
+	/// Bar colour: amber for the country with the most revenue, calm blue for the rest.
+	measure 'Colour Country' =
+			VAR MaxRevenue = MAXX ( ALLSELECTED ( dim_country[country_name] ), [Total Revenue] )
+			RETURN
+			    IF ( [Total Revenue] = MaxRevenue, "#F0A73A", "#5F87B4" )
+		lineageTag: b69fddde-138c-4df5-919d-afd4a06682cd
+
+	/// Bar colour: amber for the #1 product, calm blue for the rest.
+	measure 'Colour Product' =
+			VAR MaxRevenue = MAXX ( ALLSELECTED ( dim_product[product_name] ), [Total Revenue] )
+			RETURN
+			    IF ( [Total Revenue] = MaxRevenue, "#F0A73A", "#5F87B4" )
+		lineageTag: 056f67d8-4f23-480d-ab3c-0afdfa5b4fda
+
+	/// Text colour for stock: amber when a product ran out (stock exactly 0), normal text otherwise.
+	measure 'Colour Stock' =
+			VAR S = [Stock on Hand]
+			RETURN
+			    IF ( NOT ISBLANK ( S ) && S = 0, "#F0A73A", "#E6E9EE" )
+		lineageTag: e28d5767-5017-402d-bfa4-55fa7725ba4a
+
+	column Dummy
+		dataType: string
+		isHidden
+		lineageTag: c05729e6-b46c-44c2-b09f-a1105f01c7cd
+		summarizeBy: none
+		sourceColumn: Dummy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Dummy = text], {})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

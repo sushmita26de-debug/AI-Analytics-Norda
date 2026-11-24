@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales Data Model</title>
+<style>
+  :root {
+    --bg: #0e1318; --surface: #151c23; --surface-2: #1a232c; --line-soft: #243039;
+    --text: #cdd6de; --muted: #7d8b97;
+    --calm: #6f93b6; --calm-dim: rgba(111, 147, 182, 0.38);   /* the one calm colour */
+    --key: #e5b45a; --key-soft: rgba(229, 180, 90, 0.10);     /* join keys */
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+  body { padding: 32px 16px 48px; }
+  .page { max-width: 1240px; margin: 0 auto; }
+  header.top h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: 0.2px; }
+  header.top p { margin: 0; color: var(--muted); font-size: 14px; }
+  code { font-family: var(--mono); font-size: 12.5px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 18px 0 8px; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .sw-key, .sw-line { display: inline-block; }
+  .sw-key { width: 10px; height: 10px; border-radius: 2px; background: var(--key); }
+  .sw-line { width: 26px; height: 2px; background: var(--calm); opacity: 0.6; }
+  .scroll { overflow-x: auto; margin-top: 18px; border: 1px solid var(--line-soft); border-radius: 10px; background: #0b1015; }
+  .diagram { position: relative; min-width: 1120px; padding: 40px 36px; display: grid;
+             grid-template-columns: 210px 250px 240px 210px; column-gap: 104px; justify-content: center; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 1; }
+  svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: visible; }
+  .table { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 8px; outline: none; cursor: default; transition: border-color .18s ease; }
+  .table:hover, .table:focus-visible { border-color: var(--calm); }
+  .table header { padding: 10px 12px 9px; border-bottom: 1px solid var(--line-soft); background: var(--surface-2); border-radius: 8px 8px 0 0; }
+  .t-name { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--calm); }
+  .t-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; font-size: 11.5px; color: var(--muted); }
+  .t-kind { text-transform: uppercase; letter-spacing: 0.8px; }
+  .table ul { list-style: none; margin: 0; padding: 6px 0; }
+  .table li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 4px 12px; font-family: var(--mono); font-size: 12.5px; }
+  .table li .ty { color: var(--muted); font-size: 11px; }
+  .table li.key { color: var(--key); background: var(--key-soft); }
+  .table li.key .ty { color: var(--key); opacity: .75; }
+  path.link { fill: none; stroke: var(--calm-dim); stroke-width: 1.6; transition: stroke .18s ease; }
+  path.link.lit { stroke: var(--key); }
+  text.card { fill: var(--muted); font: 11px var(--mono); transition: fill .18s ease; }
+  text.card.lit { fill: var(--key); }
+  circle.end { fill: var(--calm-dim); transition: fill .18s ease; }
+  circle.end.lit { fill: var(--key); }
+  .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 24px; }
+  .note-box { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 8px; padding: 14px 16px; }
+  .note-box h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--calm); margin: 0 0 10px; font-weight: 600; }
+  .note-box dl { margin: 0; font-size: 13px; line-height: 1.45; }
+  .note-box dt { font-weight: 600; margin-top: 8px; }
+  .note-box dt:first-child { margin-top: 0; }
+  .note-box dd { margin: 2px 0 0; color: var(--muted); }
+  footer { margin-top: 22px; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>NORDA sales data model · star schema</h1>
+    <p>For the Power BI sales dashboard. 2 facts, 4 dimensions. Built from <code>data\clean\all</code> (run 2026-08) into <code>data/mart/</code> on 2026-11-25 01:51.</p>
+  </header>
+  <div class="legend">
+    <span><i class="sw-key"></i>Join key</span>
+    <span><i class="sw-line"></i>Relationship: 1 dimension row → many fact rows</span>
+    <span>Hover a table to light up its relationships</span>
+  </div>
+  <div class="scroll">
+    <div class="diagram" id="diagram">
+      <svg class="links" id="links" aria-hidden="true"></svg>
+      <div class="col">
+        <section class="table" id="dim_channel" tabindex="0">
+          <header><div class="t-name">dim_channel</div>
+            <div class="t-meta"><span class="t-kind">dimension</span><span>3 rows</span></div></header>
+          <ul>
+            <li class="key" data-col="channel"><span>channel</span><span class="ty">text · PK</span></li>
+          </ul>
+        </section>
+        <section class="table" id="dim_country" tabindex="0">
+          <header><div class="t-name">dim_country</div>
+            <div class="t-meta"><span class="t-kind">dimension</span><span>6 rows</span></div></header>
+          <ul>
+            <li class="key" data-col="country_code"><span>country_code</span><span class="ty">text · PK</span></li>
+            <li data-col="country_name"><span>country_name</span><span class="ty">text</span></li>
+            <li data-col="is_core_market"><span>is_core_market</span><span class="ty">bool</span></li>
+          </ul>
+        </section>
+      </div>
+      <div class="col">
+        <section class="table" id="fact_sales" tabindex="0">
+          <header><div class="t-name">fact_sales</div>
+            <div class="t-meta"><span class="t-kind">fact · one order line</span><span>156,824 rows</span></div></header>
+          <ul>
+            <li data-col="order_id"><span>order_id</span><span class="ty">text</span></li>
+            <li class="key" data-col="date_key"><span>date_key</span><span class="ty">int · FK</span></li>
+            <li class="key" data-col="sku"><span>sku</span><span class="ty">text · FK</span></li>
+            <li class="key" data-col="country_code"><span>country_code</span><span class="ty">text · FK</span></li>
+            <li class="key" data-col="channel"><span>channel</span><span class="ty">text · FK</span></li>
+            <li data-col="quantity"><span>quantity</span><span class="ty">int</span></li>
+            <li data-col="unit_price"><span>unit_price</span><span class="ty">decimal</span></li>
+            <li data-col="discount_rate"><span>discount_rate</span><span class="ty">decimal</span></li>
+            <li data-col="revenue"><span>revenue</span><span class="ty">decimal</span></li>
+            <li data-col="discount_amount"><span>discount_amount</span><span class="ty">decimal</span></li>
+          </ul>
+        </section>
+      </div>
+      <div class="col">
+        <section class="table" id="dim_date" tabindex="0">
+          <header><div class="t-name">dim_date</div>
+            <div class="t-meta"><span class="t-kind">dimension · one day</span><span>365 rows</span></div></header>
+          <ul>
+            <li class="key" data-col="date_key"><span>date_key</span><span class="ty">int · PK</span></li>
+            <li data-col="date"><span>date</span><span class="ty">date</span></li>
+            <li data-col="year"><span>year</span><span class="ty">int</span></li>
+            <li data-col="quarter"><span>quarter</span><span class="ty">int</span></li>
+            <li data-col="month_no"><span>month_no</span><span class="ty">int</span></li>
+            <li data-col="month_name"><span>month_name</span><span class="ty">text</span></li>
+            <li data-col="year_month"><span>year_month</span><span class="ty">text</span></li>
+            <li data-col="weekday"><span>weekday</span><span class="ty">text</span></li>
+            <li data-col="is_weekend"><span>is_weekend</span><span class="ty">bool</span></li>
+            <li data-col="month_label"><span>month_label</span><span class="ty">text</span></li>
+          </ul>
+        </section>
+        <section class="table" id="dim_product" tabindex="0">
+          <header><div class="t-name">dim_product</div>
+            <div class="t-meta"><span class="t-kind">dimension</span><span>377 rows</span></div></header>
+          <ul>
+            <li class="key" data-col="sku"><span>sku</span><span class="ty">text · PK</span></li>
+            <li data-col="product_name"><span>product_name</span><span class="ty">text</span></li>
+            <li data-col="brand"><span>brand</span><span class="ty">text</span></li>
+            <li data-col="category"><span>category</span><span class="ty">text</span></li>
+            <li data-col="latest_list_price"><span>latest_list_price</span><span class="ty">decimal</span></li>
+          </ul>
+        </section>
+      </div>
+      <div class="col">
+        <section class="table" id="fact_inventory" tabindex="0">
+          <header><div class="t-name">fact_inventory</div>
+            <div class="t-meta"><span class="t-kind">fact · sku × month end</span><span>4,222 rows</span></div></header>
+          <ul>
+            <li class="key" data-col="date_key"><span>date_key</span><span class="ty">int · FK</span></li>
+            <li class="key" data-col="sku"><span>sku</span><span class="ty">text · FK</span></li>
+            <li data-col="qty_on_hand"><span>qty_on_hand</span><span class="ty">int</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="note-box"><h2>Measures</h2><dl>
+      <dt>Total revenue</dt><dd>Sum of <code>revenue</code>. Per line: quantity × unit_price × (1 − discount_rate), rounded half-up to the cent.</dd>
+      <dt>Orders</dt><dd>Distinct count of <code>order_id</code>. Orders, not lines.</dd>
+      <dt>Units sold</dt><dd>Sum of <code>quantity</code>.</dd>
+      <dt>Discount amount</dt><dd>Sum of <code>discount_amount</code> = quantity × unit_price × discount_rate.</dd>
+      <dt>Stock on hand</dt><dd>Sum of <code>qty_on_hand</code> at the latest month in the selection. Never summed across months.</dd>
+    </dl></div>
+    <div class="note-box"><h2>Definitions</h2><dl>
+      <dt>Best-selling products</dt><dd>Ranked by revenue.</dd>
+      <dt>Ran out</dt><dd><code>qty_on_hand = 0</code> at month end.</dd>
+      <dt>Countries</dt><dd>All shown by default. Use <code>is_core_market</code> to filter to the core markets.</dd>
+      <dt>Stock date</dt><dd>Inventory is keyed to the month-end date, so one month filter works on both facts.</dd>
+    </dl></div>
+    <div class="note-box"><h2>Limits</h2><dl>
+      <dt>Stock vs. country and channel</dt><dd>The inventory data has no country or channel, so these filters don't change stock on hand.</dd>
+      <dt>Returns</dt><dd>Revenue is before returns. Returns are handled in a separate system.</dd>
+      <dt>Cost of running out</dt><dd>Needs a lost-sales estimate, which isn't in the data yet.</dd>
+    </dl></div>
+  </div>
+  <footer>Generated by the <code>/mart</code> skill (<code>mart.py</code>) on every build. Details in <code>knowledge/data-model.md</code>.</footer>
+</div>
+<script id="rels" type="application/json">[["fact_sales", "date_key", "dim_date", "date_key"], ["fact_sales", "sku", "dim_product", "sku"], ["fact_sales", "country_code", "dim_country", "country_code"], ["fact_sales", "channel", "dim_channel", "channel"], ["fact_inventory", "date_key", "dim_date", "date_key"], ["fact_inventory", "sku", "dim_product", "sku"]]</script>
+<script>
+  // [fact table, fact column, dimension table, dimension column], generated from mart.py
+  const RELS = JSON.parse(document.getElementById("rels").textContent);
+  const NS = "http://www.w3.org/2000/svg";
+  const diagram = document.getElementById("diagram");
+  const svg = document.getElementById("links");
+
+  function row(table, col) { return document.querySelector(`#${table} li[data-col="${col}"]`); }
+  function el(tag, attrs) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function draw() {
+    const box = diagram.getBoundingClientRect();
+    svg.replaceChildren();
+    for (const [ft, fc, dt, dc] of RELS) {
+      const a = row(ft, fc).getBoundingClientRect();
+      const b = row(dt, dc).getBoundingClientRect();
+      const right = a.left < b.left;           // is the dimension to the right of the fact?
+      const x1 = (right ? a.right : a.left) - box.left, x2 = (right ? b.left : b.right) - box.left;
+      const y1 = a.top + a.height / 2 - box.top, y2 = b.top + b.height / 2 - box.top;
+      const bend = Math.max(40, Math.abs(x2 - x1) * 0.5), dir = right ? 1 : -1;
+      const tags = { "data-a": ft, "data-b": dt };
+      svg.append(el("path", { d: `M ${x1} ${y1} C ${x1 + dir * bend} ${y1}, ${x2 - dir * bend} ${y2}, ${x2} ${y2}`, class: "link", ...tags }));
+      svg.append(el("circle", { cx: x1, cy: y1, r: 2.6, class: "end", ...tags }));
+      svg.append(el("circle", { cx: x2, cy: y2, r: 2.6, class: "end", ...tags }));
+      const many = el("text", { x: x1 + dir * 8, y: y1 - 5, "text-anchor": right ? "start" : "end", class: "card", ...tags });
+      many.textContent = "*";
+      const one = el("text", { x: x2 - dir * 8, y: y2 - 5, "text-anchor": right ? "end" : "start", class: "card", ...tags });
+      one.textContent = "1";
+      svg.append(many, one);
+    }
+  }
+  // Hover / focus a table: its relationship lines light up. Only colours change; nothing moves.
+  function light(id, on) {
+    svg.querySelectorAll(`[data-a="${id}"], [data-b="${id}"]`).forEach(n => n.classList.toggle("lit", on));
+  }
+  document.querySelectorAll(".table").forEach(t => {
+    t.addEventListener("mouseenter", () => light(t.id, true));
+    t.addEventListener("mouseleave", () => light(t.id, false));
+    t.addEventListener("focus", () => light(t.id, true));
+    t.addEventListener("blur", () => light(t.id, false));
+  });
+  new ResizeObserver(draw).observe(diagram);
+  window.addEventListener("load", draw);
+  draw();
+</script>
+</body>
+</html>

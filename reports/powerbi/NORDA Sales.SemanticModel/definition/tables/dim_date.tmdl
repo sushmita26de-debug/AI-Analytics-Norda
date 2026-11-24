@@ -1,0 +1,109 @@
+table dim_date
+	lineageTag: 370cfa88-41a3-46f5-80b9-fb399aa8730f
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: c4210859-4620-490c-a97c-0e17c6674101
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 8e4421d8-0197-4c81-9da3-349fc5fa6edb
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 99cab494-6ce4-4c97-81b7-2254f1038bb8
+			defaultHierarchy: LocalDateTable_2a912d2f-e659-4ad7-a440-9c878f3bd47d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: f97e9669-5475-4d71-ab84-fb399b39cbac
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 76748614-e6d4-4e07-9b48-10fbf2dd38c6
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_no
+		dataType: int64
+		formatString: 0
+		lineageTag: fa686a42-512d-455f-bb94-99cb8acf776f
+		summarizeBy: sum
+		sourceColumn: month_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: 8e860693-9f52-48f5-a1a7-c17c6ed90088
+		summarizeBy: none
+		sourceColumn: month_name
+		sortByColumn: month_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: f536eee1-d752-4277-a2ed-1ca6528eaa85
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column weekday
+		dataType: string
+		lineageTag: 07c97227-e8e4-44cd-881a-0483c2225c0a
+		summarizeBy: none
+		sourceColumn: weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		lineageTag: 68ba34fd-a29a-48e7-9ef0-0528a4f9b786
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_label
+		dataType: string
+		lineageTag: c678a719-edce-4020-b823-7494868b3f0a
+		summarizeBy: none
+		sourceColumn: month_label
+		sortByColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sushmita\OneDrive\Desktop\AI in Analytics Linkedin\data\mart\dim_date.csv"), [Delimiter = ",", Columns = 10, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date_key", Int64.Type}, {"date", type date}, {"year", Int64.Type}, {"quarter", Int64.Type}, {"month_no", Int64.Type}, {"month_name", type text}, {"year_month", type text}, {"weekday", type text}, {"is_weekend", type logical}, {"month_label", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

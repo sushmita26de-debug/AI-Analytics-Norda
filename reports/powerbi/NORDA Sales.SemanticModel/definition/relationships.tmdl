@@ -1,0 +1,29 @@
+relationship f0b54679-e85c-44b6-9a76-fd64fe81af75
+	fromColumn: fact_sales.date_key
+	toColumn: dim_date.date_key
+
+relationship 4a543ce9-0374-4bb6-ae00-534c2747e334
+	fromColumn: fact_inventory.date_key
+	toColumn: dim_date.date_key
+
+relationship c52cf14d-b854-4629-b051-651d58d6bd71
+	fromColumn: fact_sales.sku
+	toColumn: dim_product.sku
+
+relationship 8352e58b-f2ed-43ca-a3f2-5a13ed0a7b40
+	fromColumn: fact_inventory.sku
+	toColumn: dim_product.sku
+
+relationship e8a11027-4aee-4e1c-aa19-427a9205d724
+	fromColumn: fact_sales.country_code
+	toColumn: dim_country.country_code
+
+relationship b3c662f0-7cf7-4eeb-9e41-6a26636b5d6a
+	fromColumn: fact_sales.channel
+	toColumn: dim_channel.channel
+
+relationship 99cab494-6ce4-4c97-81b7-2254f1038bb8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.date
+	toColumn: LocalDateTable_2a912d2f-e659-4ad7-a440-9c878f3bd47d.Date
+

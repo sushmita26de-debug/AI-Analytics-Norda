@@ -1,0 +1,101 @@
+table fact_sales
+	lineageTag: 66d44021-2fc8-40f3-aef1-0183f1f50af0
+
+	column order_id
+		dataType: string
+		lineageTag: 0b0eb84e-ddc5-49f3-bc35-995495579566
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 18016ff5-13c1-418c-a56e-e3b42ace3982
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku
+		dataType: string
+		lineageTag: a7c8686a-07ca-4e28-9899-0bde138243d7
+		summarizeBy: none
+		sourceColumn: sku
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_code
+		dataType: string
+		lineageTag: f30727ec-8bcf-4ac8-9673-7063c0000ab8
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel
+		dataType: string
+		lineageTag: e94d3bf3-1e0b-4214-98ea-f4749bc75295
+		summarizeBy: none
+		sourceColumn: channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: #,0
+		lineageTag: c1e51dc8-641e-4ffe-8644-efdcee517564
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: decimal
+		formatString: #,0.00
+		lineageTag: b07e30f3-20ab-4be6-90bb-e435a76798a2
+		summarizeBy: none
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_rate
+		dataType: double
+		formatString: 0.00
+		lineageTag: bf5a7603-8436-44db-8c26-67d11f938052
+		summarizeBy: none
+		sourceColumn: discount_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column revenue
+		dataType: decimal
+		formatString: #,0.00
+		lineageTag: be6e4f53-4e77-461b-885a-042c70621162
+		summarizeBy: sum
+		sourceColumn: revenue
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_amount
+		dataType: decimal
+		formatString: #,0.00
+		lineageTag: 4c90fade-3769-455e-960e-6a7cb97bed95
+		summarizeBy: sum
+		sourceColumn: discount_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sushmita\OneDrive\Desktop\AI in Analytics Linkedin\data\mart\fact_sales.csv"), [Delimiter = ",", Columns = 10, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"order_id", type text}, {"date_key", Int64.Type}, {"sku", type text}, {"country_code", type text}, {"channel", type text}, {"quantity", Int64.Type}, {"unit_price", Currency.Type}, {"discount_rate", type number}, {"revenue", Currency.Type}, {"discount_amount", Currency.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

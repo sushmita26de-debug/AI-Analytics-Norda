@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "NORDA Sales"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9c63ab75-49d1-48d6-b145-fa8cccf90014"
+  }
+}

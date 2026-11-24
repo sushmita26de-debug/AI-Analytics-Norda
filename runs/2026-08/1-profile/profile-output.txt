@@ -1,0 +1,533 @@
+orders.csv: 9,204,099 bytes, no BOM, CRLF line endings: 160,822
+products.csv: 20,065 bytes, no BOM, CRLF line endings: 378
+inventory.csv: 94,407 bytes, no BOM, CRLF line endings: 4,223
+
+================================================================================
+FILE: orders.csv
+================================================================================
+Rows: 160,821   Columns: 9
+Columns: ['ORD_NO', 'CRTD_DT', 'CHNL', 'CTRY', 'CUST_REF', 'ART_NO', 'QTY', 'UNIT_PRC', 'DISC_PCT']
+Fully duplicated rows: 3,997 (2.49%)
+
+--- orders.ORD_NO
+  blank/empty:            0 (0.00%)
+  distinct values:        101,142
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      'AA999999'             160,821 (100.00%)      e.g. 'SO443307'
+  top values:
+      'SO462774'                          10 (0.01%)
+      'SO496831'                          10 (0.01%)
+      'SO457855'                          10 (0.01%)
+      'SO538822'                          10 (0.01%)
+      'SO465137'                          10 (0.01%)
+      'SO544738'                          10 (0.01%)
+      'SO519560'                          10 (0.01%)
+      'SO518643'                          10 (0.01%)
+      'SO490203'                          10 (0.01%)
+      'SO449033'                          8 (0.00%)
+
+--- orders.CRTD_DT
+  blank/empty:            0 (0.00%)
+  distinct values:        730
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 2):
+      '99/99/9999'           80,742 (50.21%)        e.g. '01/01/2025'
+      '9999-99-99'           80,079 (49.79%)        e.g. '2025-01-01'
+  top values:
+      '01/12/2025'                        950 (0.59%)
+      '2025-12-01'                        880 (0.55%)
+      '02/12/2025'                        877 (0.55%)
+      '2025-12-02'                        871 (0.54%)
+      '29/11/2025'                        754 (0.47%)
+      '2025-11-29'                        732 (0.46%)
+      '2025-11-30'                        635 (0.39%)
+      '30/11/2025'                        572 (0.36%)
+      '2025-07-07'                        382 (0.24%)
+      '2025-02-28'                        381 (0.24%)
+
+--- orders.CHNL
+  blank/empty:            0 (0.00%)
+  distinct values:        3
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 2):
+      'AAA'                  133,711 (83.14%)       e.g. 'app'
+      'AAAAAAAAAAA'          27,110 (16.86%)        e.g. 'marketplace'
+  top values:
+      'web'                               81,686 (50.79%)
+      'app'                               52,025 (32.35%)
+      'marketplace'                       27,110 (16.86%)
+
+--- orders.CTRY
+  blank/empty:            0 (0.00%)
+  distinct values:        12
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 5):
+      'AA'                   159,179 (98.98%)       e.g. 'ES'
+      'AAAAAAA'              796 (0.49%)            e.g. 'Germany'
+      'AAAAA'                374 (0.23%)            e.g. 'Spain'
+      'AAAAAA'               278 (0.17%)            e.g. 'France'
+      'AAAAAAAAAAA'          194 (0.12%)            e.g. 'Netherlands'
+  top values:
+      'DE'                                71,945 (44.74%)
+      'FR'                                27,202 (16.91%)
+      'NL'                                19,089 (11.87%)
+      'IT'                                18,701 (11.63%)
+      'ES'                                15,258 (9.49%)
+      'AT'                                6,984 (4.34%)
+      'Germany'                           728 (0.45%)
+      'France'                            278 (0.17%)
+      'Italy'                             198 (0.12%)
+      'Netherlands'                       194 (0.12%)
+
+--- orders.CUST_REF
+  blank/empty:            32,426 (20.16%)
+  distinct values:        48,212
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      'A999999'              128,395 (79.84%)       e.g. 'C200416'
+  top values:
+      'C219901'                           44 (0.03%)
+      'C225122'                           43 (0.03%)
+      'C241095'                           42 (0.03%)
+      'C227216'                           39 (0.02%)
+      'C220964'                           39 (0.02%)
+      'C226627'                           37 (0.02%)
+      'C217053'                           36 (0.02%)
+      'C214031'                           35 (0.02%)
+      'C186911'                           35 (0.02%)
+      'C235223'                           34 (0.02%)
+
+--- orders.ART_NO
+  blank/empty:            0 (0.00%)
+  distinct values:        375
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      'AA-99999'             160,821 (100.00%)      e.g. 'ON-46867'
+  top values:
+      'NO-66866'                          3,161 (1.97%)
+      'NO-79142'                          2,534 (1.58%)
+      'NO-66553'                          2,310 (1.44%)
+      'NO-28544'                          2,189 (1.36%)
+      'NO-43840'                          2,049 (1.27%)
+      'KA-57052'                          1,966 (1.22%)
+      'PA-11312'                          1,850 (1.15%)
+      'NO-10130'                          1,704 (1.06%)
+      'NO-74744'                          1,645 (1.02%)
+      'NO-33040'                          1,608 (1.00%)
+
+--- orders.QTY
+  blank/empty:            0 (0.00%)
+  distinct values:        8
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      '9'                    160,821 (100.00%)      e.g. '1'
+  numeric: min=1  max=8  mean=1.31  median=1.0
+  zero: 0 (0.00%)   negative: 0 (0.00%)   not a number: 0 (0.00%)
+
+--- orders.UNIT_PRC
+  blank/empty:            0 (0.00%)
+  distinct values:        339
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 9):
+      '99.99'                82,939 (51.57%)        e.g. '36.55'
+      '999.99'               41,392 (25.74%)        e.g. '319.99'
+      '99.9'                 11,038 (6.86%)         e.g. '50.0'
+      '9.99'                 9,676 (6.02%)          e.g. '9.99'
+      '999.9'                7,372 (4.58%)          e.g. '899.0'
+      '9999.99'              5,820 (3.62%)          e.g. '1929.95'
+  numeric: min=8.99  max=2214.99  mean=188.39  median=40.0
+  zero: 0 (0.00%)   negative: 0 (0.00%)   not a number: 0 (0.00%)
+
+--- orders.DISC_PCT
+  blank/empty:            0 (0.00%)
+  distinct values:        11
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 2):
+      '9.9'                  149,254 (92.81%)       e.g. '0.0'
+      '9.99'                 11,567 (7.19%)         e.g. '0.15'
+  numeric: min=0.0  max=0.5  mean=0.02  median=0.0
+  zero: 139,949 (87.02%)   negative: 0 (0.00%)   not a number: 0 (0.00%)
+
+================================================================================
+FILE: products.csv
+================================================================================
+Rows: 377   Columns: 5
+Columns: ['sku', 'product_name', 'brand', 'category', 'list_price']
+Fully duplicated rows: 0 (0.00%)
+
+--- products.sku
+  blank/empty:            0 (0.00%)
+  distinct values:        377
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      'AA-99999'             377 (100.00%)          e.g. 'KA-10999'
+  top values:
+      'KA-10999'                          1 (0.27%)
+      'KA-11490'                          1 (0.27%)
+      'KA-12729'                          1 (0.27%)
+      'KA-12730'                          1 (0.27%)
+      'KA-14178'                          1 (0.27%)
+      'KA-15133'                          1 (0.27%)
+      'KA-16965'                          1 (0.27%)
+      'KA-16966'                          1 (0.27%)
+      'KA-18736'                          1 (0.27%)
+      'KA-19422'                          1 (0.27%)
+
+--- products.product_name
+  blank/empty:            0 (0.00%)
+  distinct values:        377
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 166):
+      'AAAA A9-9999'         31 (8.22%)             e.g. 'Kova G3-1300'
+      'AAAAA AAAA 9 AAAAA'   25 (6.63%)             e.g. 'Ondia Loop 2 White'
+      'AAAAA AAA 99 999AA'   18 (4.77%)             e.g. 'Kaivo Tab 12 128GB'
+      'AAAAA AAAA 99 A9'     14 (3.71%)             e.g. 'Visna View 22 G2'
+      'AAAAA AAAA 9 AAAA'    12 (3.18%)             e.g. 'Ondia Boom 1 Blue'
+      'AAAAA A 99 999AA'     9 (2.39%)              e.g. 'Kaivo X 14 128GB'
+  top values:
+      'Kaivo Tab 12 128GB'                1 (0.27%)
+      'Kaivo Buds Pro 1'                  1 (0.27%)
+      'Kaivo X 14 128GB'                  1 (0.27%)
+      'Kaivo One 13 256GB'                1 (0.27%)
+      'Kaivo Tab 8 64GB'                  1 (0.27%)
+      'Kaivo X 12 256GB'                  1 (0.27%)
+      'Kaivo Pro 11 512GB'                1 (0.27%)
+      'Kaivo X 12 128GB'                  1 (0.27%)
+      'Kaivo X 13 256GB'                  1 (0.27%)
+      'Kaivo Tab 12 256GB'                1 (0.27%)
+
+--- products.brand
+  blank/empty:            0 (0.00%)
+  distinct values:        16
+  leading/trailing space: 0 (0.00%)
+  case/space variants:    6 values written >1 way:
+      {'Kaivo': 40, 'KAIVO': 2, 'kaivo': 2}
+      {'Kova': 47, 'KOVA': 1}
+      {'Nodo': 162, 'nodo': 9, 'NODO': 7}
+      {'Ondia': 54, 'ondia': 1, 'ONDIA': 1}
+      {'Pavo': 23, 'pavo': 1}
+      {'Visna': 23, 'visna': 3, 'VISNA': 1}
+  formats (top 6 of 2):
+      'AAAA'                 250 (66.31%)           e.g. 'Kova'
+      'AAAAA'                127 (33.69%)           e.g. 'Kaivo'
+  top values:
+      'Nodo'                              162 (42.97%)
+      'Ondia'                             54 (14.32%)
+      'Kova'                              47 (12.47%)
+      'Kaivo'                             40 (10.61%)
+      'Pavo'                              23 (6.10%)
+      'Visna'                             23 (6.10%)
+      'nodo'                              9 (2.39%)
+      'NODO'                              7 (1.86%)
+      'visna'                             3 (0.80%)
+      'KAIVO'                             2 (0.53%)
+
+--- products.category
+  blank/empty:            0 (0.00%)
+  distinct values:        15
+  leading/trailing space: 0 (0.00%)
+  case/space variants:    5 values written >1 way:
+      {'Accessories': 159, 'ACCESSORIES': 15, 'accessories': 4}
+      {'Audio': 55, 'AUDIO': 5, 'audio': 2}
+      {'Computers': 39, 'COMPUTERS': 2, 'computers': 2}
+      {'Monitors': 29, 'monitors': 2, 'MONITORS': 1}
+      {'Phones & Tablets': 59, 'phones & tablets': 2, 'PHONES & TABLETS': 1}
+  formats (top 6 of 5):
+      'AAAAAAAAAAA'          178 (47.21%)           e.g. 'Accessories'
+      'AAAAAA & AAAAAAA'     62 (16.45%)            e.g. 'Phones & Tablets'
+      'AAAAA'                62 (16.45%)            e.g. 'Audio'
+      'AAAAAAAAA'            43 (11.41%)            e.g. 'Computers'
+      'AAAAAAAA'             32 (8.49%)             e.g. 'Monitors'
+  top values:
+      'Accessories'                       159 (42.18%)
+      'Phones & Tablets'                  59 (15.65%)
+      'Audio'                             55 (14.59%)
+      'Computers'                         39 (10.34%)
+      'Monitors'                          29 (7.69%)
+      'ACCESSORIES'                       15 (3.98%)
+      'AUDIO'                             5 (1.33%)
+      'accessories'                       4 (1.06%)
+      'phones & tablets'                  2 (0.53%)
+      'COMPUTERS'                         2 (0.53%)
+
+--- products.list_price
+  blank/empty:            0 (0.00%)
+  distinct values:        273
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 9):
+      '99.99'                174 (46.15%)           e.g. '93.99'
+      '999.99'               128 (33.95%)           e.g. '571.99'
+      '9999.99'              23 (6.10%)             e.g. '1127.99'
+      '99.9'                 23 (6.10%)             e.g. '20.0'
+      '9.99'                 12 (3.18%)             e.g. '9.99'
+      '999.9'                8 (2.12%)              e.g. '300.0'
+  numeric: min=8.99  max=2104.99  mean=274.79  median=60.0
+  zero: 0 (0.00%)   negative: 0 (0.00%)   not a number: 0 (0.00%)
+
+================================================================================
+FILE: inventory.csv
+================================================================================
+Rows: 4,222   Columns: 4
+Columns: ['art_no', 'stk_month', 'qty_hand', 'reserved_qty']
+Fully duplicated rows: 0 (0.00%)
+
+--- inventory.art_no
+  blank/empty:            0 (0.00%)
+  distinct values:        375
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 1):
+      'AA-99999'             4,222 (100.00%)        e.g. 'KA-10999'
+  top values:
+      'KA-10999'                          12 (0.28%)
+      'KA-11490'                          12 (0.28%)
+      'KA-12730'                          12 (0.28%)
+      'KA-14178'                          12 (0.28%)
+      'KA-15133'                          12 (0.28%)
+      'KA-16965'                          12 (0.28%)
+      'KA-16966'                          12 (0.28%)
+      'KA-18736'                          12 (0.28%)
+      'KA-19422'                          12 (0.28%)
+      'KA-19485'                          12 (0.28%)
+
+--- inventory.stk_month
+  blank/empty:            0 (0.00%)
+  distinct values:        16
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 2):
+      '9999-99'              4,216 (99.86%)         e.g. '2025-01'
+      '9999-9'               6 (0.14%)              e.g. '2025-4'
+  top values:
+      '2025-12'                           375 (8.88%)
+      '2025-11'                           373 (8.83%)
+      '2025-10'                           372 (8.81%)
+      '2025-09'                           364 (8.62%)
+      '2025-08'                           356 (8.43%)
+      '2025-07'                           352 (8.34%)
+      '2025-06'                           349 (8.27%)
+      '2025-05'                           347 (8.22%)
+      '2025-04'                           340 (8.05%)
+      '2025-03'                           339 (8.03%)
+
+--- inventory.qty_hand
+  blank/empty:            0 (0.00%)
+  distinct values:        499
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 4):
+      '99'                   2,277 (53.93%)         e.g. '43'
+      '999'                  1,711 (40.53%)         e.g. '149'
+      '9'                    230 (5.45%)            e.g. '9'
+      '9999'                 4 (0.09%)              e.g. '1165'
+  numeric: min=0  max=1165  mean=114.79  median=79.0
+  zero: 72 (1.71%)   negative: 0 (0.00%)   not a number: 0 (0.00%)
+
+--- inventory.reserved_qty
+  blank/empty:            4,222 (100.00%)
+  distinct values:        0
+  leading/trailing space: 0 (0.00%)
+  formats (top 6 of 0):
+  top values:
+
+================================================================================
+CHECKS: orders
+================================================================================
+Dates (CRTD_DT):
+  format DD/MM/YYYY   80,742 (50.21%)
+  format YYYY-MM-DD   80,079 (49.79%)
+  could not parse: 0 (0.00%)
+  range: 2025-01-01 -> 2025-12-31
+  slash dates with first part > 12 (only possible as DD/MM):  47,610 (29.60%)
+  slash dates with second part > 12 (only possible as MM/DD): 0 (0.00%)
+  slash dates ambiguous (both <= 12, day != month):           30,271 (18.82%)
+  orders dated earlier than the previous order number (reading DD/MM): 0 of 101,142
+  same check if ambiguous dates were read as MM/DD:                  9,522 of 101,142
+  rows per month:
+      2025-01  12,532
+      2025-02  11,422
+      2025-03  12,358
+      2025-04  11,895
+      2025-05  12,955
+      2025-06  9,869
+      2025-07  12,340
+      2025-08  12,756
+      2025-09  13,890
+      2025-10  15,344
+      2025-11  16,105
+      2025-12  19,355
+  date format per month:
+      col_0    DD/MM/YYYY  YYYY-MM-DD
+      _month                         
+      2025-01        6254        6278
+      2025-02        5731        5691
+      2025-03        6249        6109
+      2025-04        6031        5864
+      2025-05        6436        6519
+      2025-06        4885        4984
+      2025-07        6271        6069
+      2025-08        6395        6361
+      2025-09        6977        6913
+      2025-10        7740        7604
+      2025-11        7983        8122
+      2025-12        9790        9565
+  calendar days with no order rows: 0  []
+  rows per day: min=191 median=423 max=1830
+  lowest 10 days:  [('2025-06-22', 191), ('2025-06-29', 229), ('2025-06-01', 240), ('2025-06-08', 241), ('2025-06-15', 242), ('2025-07-13', 254), ('2025-07-20', 255), ('2025-06-05', 264), ('2025-01-13', 266), ('2025-02-03', 272)]
+  highest 10 days: [('2025-12-01', 1830), ('2025-12-02', 1748), ('2025-11-29', 1486), ('2025-11-30', 1207), ('2025-07-07', 761), ('2025-02-28', 750), ('2025-12-15', 733), ('2025-12-08', 697), ('2025-12-22', 681), ('2025-11-10', 664)]
+  average rows per day by month: 2025-01=404, 2025-02=408, 2025-03=399, 2025-04=396, 2025-05=418, 2025-06=329, 2025-07=398, 2025-08=411, 2025-09=463, 2025-10=495, 2025-11=537, 2025-12=624
+
+Channel values not in ['app', 'marketplace', 'web']: 0 (0.00%)
+Country values not in ['DE', 'FR', 'IT', 'NL']: 23,884 (14.85%)
+  {'ES': 15258, 'AT': 6984, 'Germany': 728, 'France': 278, 'Italy': 198, 'Netherlands': 194, 'Spain': 176, 'Austria': 68}
+  full country names instead of codes: 1,642 (1.02%)
+  after mapping names to codes: {'DE': 72673, 'FR': 27480, 'NL': 19283, 'IT': 18899, 'ES': 15434, 'AT': 7052}
+  full names by channel: {'web': 861, 'app': 499, 'marketplace': 282}
+  AT+ES (outside the 4 markets) share of rows by month: 2025-01=12.8%, 2025-02=13.8%, 2025-03=13.5%, 2025-04=13.6%, 2025-05=13.8%, 2025-06=13.9%, 2025-07=14.6%, 2025-08=14.2%, 2025-09=14.8%, 2025-10=13.8%, 2025-11=14.3%, 2025-12=14.4%
+  AT+ES share of rows by channel: app=12.9%, marketplace=15.1%, web=14.3%
+  rows by channel x country (mapped):
+      CTRY           AT     DE     ES     FR     IT     NL     All
+      CHNL                                                        
+      app          2326  24976   4383   8453   5517   6370   52025
+      marketplace  1113  11046   2986   4877   3892   3196   27110
+      web          3613  36651   8065  14150   9490   9717   81686
+      All          7052  72673  15434  27480  18899  19283  160821
+
+Customer ref filled, by channel:
+  app            48,945 (94.08%) of 52,025 rows
+  marketplace    6,618 (24.41%) of 27,110 rows
+  web            72,832 (89.16%) of 81,686 rows
+  marketplace rows with customer ref, by month: 2025-01=17.9%, 2025-02=21.1%, 2025-03=26.1%, 2025-04=27.0%, 2025-05=27.8%, 2025-06=24.4%, 2025-07=27.0%, 2025-08=25.7%, 2025-09=25.1%, 2025-10=24.8%, 2025-11=25.3%, 2025-12=22.6%
+  marketplace customer refs also seen on web/app: 1,565 of 3,415
+
+QTY <= 0: 0 (0.00%)   non-integer: 0 (0.00%)   max=8
+  QTY distribution: {'1': 131259, '2': 17551, '3': 6550, '4': 3283, '5': 1536, '6': 553, '7': 53, '8': 36}
+UNIT_PRC <= 0: 0 (0.00%)
+DISC_PCT range: 0.0 -> 0.5   values: {'0.0': 139949, '0.05': 5034, '0.1': 4929, '0.15': 3621, '0.2': 2348, '0.25': 731, '0.3': 872, '0.35': 1354, '0.4': 1144, '0.45': 827, '0.5': 12}
+  rows with discount > 0: 20,872 (12.98%)
+  by channel: app=12.7%, marketplace=13.9%, web=12.8%
+  by month:   2025-01=8.1%, 2025-02=8.8%, 2025-03=13.0%, 2025-04=8.2%, 2025-05=7.9%, 2025-06=9.2%, 2025-07=27.6%, 2025-08=9.8%, 2025-09=7.4%, 2025-10=7.8%, 2025-11=23.6%, 2025-12=18.9%
+
+UNIT_PRC / catalogue list_price:
+  rows compared: 160,821
+  quantiles: p0=0.925, p1=0.980, p5=1.000, p25=1.000, p50=1.000, p75=1.050, p95=1.112, p99=1.176, p100=1.395
+  equal to list (within 0.1%): 89,801 (55.84%)
+  above list:                   66,320 (41.24%)
+  below list:                   4,700 (2.92%)
+  far off (>1.5x or <0.5x):     0 (0.00%)
+  share above list, by channel: app=42.1%, marketplace=37.4%, web=41.9%
+  share below list, by channel: app=3.0%, marketplace=2.8%, web=2.9%
+  median ratio by channel:      app=1.028, marketplace=1.023, web=1.027
+  share above list, by month:   2025-01=47.7%, 2025-02=47.3%, 2025-03=45.4%, 2025-04=46.0%, 2025-05=43.6%, 2025-06=41.7%, 2025-07=40.6%, 2025-08=39.0%, 2025-09=38.4%, 2025-10=38.2%, 2025-11=37.1%, 2025-12=35.9%
+Distinct unit prices per article: median=1.0, max=3, articles with >1 price: 101 of 375
+  article+channel combinations with >1 price: 284 of 1111
+  e.g. KA-10999 (list 571.99): [('app', 610.0, 27), ('app', 630.0, 37), ('marketplace', 610.0, 2), ('marketplace', 630.0, 2), ('web', 610.0, 40), ('web', 630.0, 71)]
+  e.g. KA-11490 (list 161.95): [('app', 167.02, 97), ('app', 179.99, 144), ('marketplace', 167.02, 26), ('marketplace', 179.99, 32), ('web', 167.02, 181), ('web', 179.99, 208)]
+  e.g. KA-14178 (list 279.99): [('app', 291.95, 1), ('app', 307.99, 5), ('web', 307.99, 7)]
+
+Rows sharing ORD_NO+ART_NO with another row: 7,994 (4.97%)
+Rows that are exact copies of another row:   7,994 (4.97%)
+  extra copies (rows to drop if they are true duplicates): 3,997
+  extra copies after normalising date + country: 3,997
+  extra copies by month:   {'2025-01': 326, '2025-02': 287, '2025-03': 304, '2025-04': 285, '2025-05': 316, '2025-06': 249, '2025-07': 297, '2025-08': 322, '2025-09': 349, '2025-10': 370, '2025-11': 398, '2025-12': 494}
+  extra copies by channel: {'web': 2103, 'app': 1229, 'marketplace': 665}
+  copies per duplicated line: {'2': 3997}
+
+Distinct orders: 101,142   lines per order: mean=1.59 max=10
+  orders with >1 date             : 0 (0.00%)
+  orders with >1 country (raw)    : 1,017 (1.01%)
+  orders with >1 country (mapped) : 0 (0.00%)
+  orders with >1 channel          : 0 (0.00%)
+  orders with >1 customer         : 0 (0.00%)
+ORD_NO number range: 443307 -> 557664  (numbers in range not present: 13,216)
+
+Order rows whose ART_NO is not in products: 0 (0.00%)
+
+Line value by month (EUR). 'after disc' assumes DISC_PCT is a fraction (0.15 = 15%):
+              qty_x_price  after_disc dup_copies extra_ctry above_list_uplift
+      m                                                                      
+      2025-01   2,774,282   2,730,518     74,323    327,981           173,317
+      2025-02   2,673,774   2,632,663     63,013    351,714           158,616
+      2025-03   2,797,338   2,730,836     63,478    358,148           151,050
+      2025-04   2,547,095   2,518,432     58,842    279,879           134,968
+      2025-05   2,858,914   2,824,710     59,786    382,948           143,956
+      2025-06   2,245,665   2,199,971     51,628    279,451           113,246
+      2025-07   2,782,421   2,671,113     63,704    376,499           139,749
+      2025-08   2,992,591   2,953,272     63,756    403,806           145,042
+      2025-09   3,119,307   3,092,502     65,218    415,238           143,037
+      2025-10   3,327,155   3,286,192     78,139    409,643           144,298
+      2025-11   3,308,510   3,169,350     78,045    435,650           144,673
+      2025-12   3,648,908   3,509,906     92,658    452,269           124,146
+      total    35,075,962  34,319,466    812,590  4,473,227         1,716,099
+  top 5 single lines by value:
+               ORD_NO     CRTD_DT CHNL    ART_NO QTY UNIT_PRC   _value
+      1149   SO444262  2025-01-04  web  KO-49107   4  2214.99  8859.96
+      22396  SO459312  2025-02-26  app  KO-49107   4  2214.99  8859.96
+      39380  SO471217  2025-04-09  web  KO-49107   4  2214.99  8859.96
+      52115  SO480088  10/05/2025  web  KO-49107   4  2214.99  8859.96
+      95997  SO511218  31/08/2025  web  KO-49107   4  2214.99  8859.96
+
+================================================================================
+CHECKS: products
+================================================================================
+Duplicate sku: 0 (0.00%)   ignoring case: 0
+Brand not written exactly as expected:    28 (7.43%)  {'nodo': 9, 'NODO': 7, 'visna': 3, 'KAIVO': 2, 'kaivo': 2, 'KOVA': 1, 'ondia': 1, 'ONDIA': 1, 'pavo': 1, 'VISNA': 1}
+Category not written exactly as expected: 36 (9.55%)  {'ACCESSORIES': 15, 'AUDIO': 5, 'accessories': 4, 'phones & tablets': 2, 'COMPUTERS': 2, 'computers': 2, 'audio': 2, 'monitors': 2, 'PHONES & TABLETS': 1, 'MONITORS': 1}
+Either miscased: 60 (15.92%)
+Unknown brand/category even after fixing case: 0 / 0
+Brand x category (case-normalised):
+      category  Accessories  Audio  Computers  Monitors  Phones & Tablets
+      brand                                                              
+      Kaivo               0      6          0         0                38
+      Kova                0      0         43         5                 0
+      Nodo              178      0          0         0                 0
+      Ondia               0     56          0         0                 0
+      Pavo                0      0          0         0                24
+      Visna               0      0          0        27                 0
+SKU prefix x brand (case-normalised):
+      brand  Kaivo  Kova  Nodo  Ondia  Pavo  Visna
+      sku                                         
+      KA        44     0     0      0     0      0
+      KO         0    48     0      0     0      0
+      NO         0     0   178      0     0      0
+      ON         0     0     0     56     0      0
+      PA         0     0     0      0    24      0
+      VI         0     0     0      0     0     27
+product_name does not start with brand: 0
+Same product_name on more than one sku: 0
+list_price <= 0: 0   blank/non-numeric: 0
+list_price by category (case-normalised):
+                        count     mean     std     min     25%      50%      75%      max
+      c                                                                                  
+      Accessories       178.0    27.35   17.55    8.99   15.99    21.03    33.71   109.99
+      Audio              62.0    99.37   55.80   26.99   56.95    80.47   130.98   279.99
+      Computers          43.0  1131.89  511.25  360.99  698.47  1041.99  1536.48  2104.99
+      Monitors           32.0   342.29  162.57  119.99  226.74   314.48   442.24   832.99
+      Phones & Tablets   62.0   531.29  321.81  129.55  226.98   514.47   803.21  1297.99
+
+================================================================================
+CHECKS: inventory
+================================================================================
+stk_month formats: {'9999-99': 4216, '9999-9': 6}
+  short-format rows: [['KO-15080', '2025-4', '35', ''], ['NO-13693', '2025-7', '195', ''], ['NO-35239', '2025-7', '227', ''], ['NO-61301', '2025-7', '158', ''], ['NO-63876', '2025-9', '80', ''], ['ON-45932', '2025-6', '60', '']]
+stk_month range (normalised): 2025-01 -> 2025-12
+Rows per month (normalised): {'2025-01': 320, '2025-02': 329, '2025-03': 339, '2025-04': 341, '2025-05': 347, '2025-06': 350, '2025-07': 355, '2025-08': 356, '2025-09': 365, '2025-10': 372, '2025-11': 373, '2025-12': 375}
+Duplicate art_no+month after normalising: 0 (0.00%)
+qty_hand negative: 0   zero: 72 (1.71%)   blank: 0
+reserved_qty filled: 0 (0.00%)
+Inventory art_no not in products: 0
+Products with no inventory rows: ['KO-27064', 'NO-78001']
+Articles with a stock row every month 2025-01..2025-12: 320 of 375
+Articles with a missing month between first and last row: 0
+Articles whose last row is before 2025-12: 0
+First stock month per article: {'2025-01': 320, '2025-02': 9, '2025-03': 10, '2025-04': 2, '2025-05': 6, '2025-06': 3, '2025-07': 5, '2025-08': 1, '2025-09': 9, '2025-10': 7, '2025-11': 1, '2025-12': 2}
+Article-months with sales but no stock row: 0  e.g. []
+Articles first sold before their first stock row: 0
+Articles first sold in the same month as their first stock row: 358
+Article-months with month-end stock 0 that also had sales: 3 of 72
+
+================================================================================
+CHECKS: catalogue coverage
+================================================================================
+Catalogue articles never sold: 2 of 377
+                sku              product_name brand     category list_price
+      56   KO-27064              Kova K3-1950  Kova    Computers     853.95
+      265  NO-78001  Nodo Vertical Mouse Grey  Nodo  Accessories      39.99

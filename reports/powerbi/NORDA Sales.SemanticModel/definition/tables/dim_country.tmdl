@@ -1,0 +1,39 @@
+table dim_country
+	lineageTag: 251e0026-b2c3-42ab-a745-530ba50a65bd
+
+	column country_code
+		dataType: string
+		lineageTag: 89b0cfcf-22f3-4386-86a2-c048fc5537b6
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_name
+		dataType: string
+		lineageTag: 00d83dbb-9368-4dc1-b2fb-b584d44e5e94
+		summarizeBy: none
+		sourceColumn: country_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_core_market
+		dataType: boolean
+		lineageTag: a107a6c0-7a87-4487-abf4-8a9b30e8940a
+		summarizeBy: none
+		sourceColumn: is_core_market
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_country = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sushmita\OneDrive\Desktop\AI in Analytics Linkedin\data\mart\dim_country.csv"), [Delimiter = ",", Columns = 3, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"country_code", type text}, {"country_name", type text}, {"is_core_market", type logical}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

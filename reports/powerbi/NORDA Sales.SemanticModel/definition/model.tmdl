@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["_Measures", "dim_date", "dim_product", "dim_country", "dim_channel", "fact_sales", "fact_inventory"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table _Measures
+ref table dim_date
+ref table dim_product
+ref table dim_country
+ref table dim_channel
+ref table fact_sales
+ref table fact_inventory
+ref table DateTableTemplate_feb763b4-7fa1-40d8-a15e-b70e7126b66a
+ref table LocalDateTable_2a912d2f-e659-4ad7-a440-9c878f3bd47d
+
+ref cultureInfo en-US
+

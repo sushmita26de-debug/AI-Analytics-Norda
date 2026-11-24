@@ -1,0 +1,7 @@
+country_code,country_name,is_core_market
+AT,Austria,False
+DE,Germany,True
+ES,Spain,False
+FR,France,True
+IT,Italy,True
+NL,Netherlands,True

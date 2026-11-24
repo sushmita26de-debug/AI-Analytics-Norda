@@ -1,0 +1,56 @@
+table dim_product
+	lineageTag: 486f9414-1e3c-4748-bc31-384020161e3a
+
+	column sku
+		dataType: string
+		lineageTag: 3518b9c9-ff01-4d2e-9050-51e210aee62b
+		summarizeBy: none
+		sourceColumn: sku
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: f245b269-7436-4e5b-a327-caed0fa59339
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand
+		dataType: string
+		lineageTag: 45b4f560-a4ea-45ef-817c-89364ed01177
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 78118469-1698-4bf6-9db6-ccabc114b9b9
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column latest_list_price
+		dataType: decimal
+		formatString: #,0.00
+		lineageTag: 13f5d5a7-73a5-427d-9b29-f77c4eb23bbf
+		summarizeBy: none
+		sourceColumn: latest_list_price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sushmita\OneDrive\Desktop\AI in Analytics Linkedin\data\mart\dim_product.csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"sku", type text}, {"product_name", type text}, {"brand", type text}, {"category", type text}, {"latest_list_price", Currency.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
